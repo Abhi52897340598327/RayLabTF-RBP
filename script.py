@@ -870,7 +870,7 @@ def plot_age_persistence_summary(result: pd.DataFrame, output_dir: Path) -> pd.S
 
     fig, ax = plt.subplots(figsize=(9, 5))
     bars = ax.bar(counts.index, counts.values)
-    ax.set_xlabel("Ages with strict sex-associated splicing")
+    ax.set_xlabel("Ages with sex-associated splicing")
     ax.set_ylabel("Number of exact TF–RBP candidate events")
     ax.set_title("Age specificity and persistence of TF–RBP candidate events")
     ax.tick_params(axis="x", rotation=30)
@@ -954,7 +954,7 @@ def plot_single_direction_bar(
     fig, ax = plt.subplots(figsize=(10, 5))
     bars = ax.bar(labels, values)
     ax.set_title(title)
-    ax.set_xlabel("Ages with strict sex-associated splicing")
+    ax.set_xlabel("Ages with sex-associated splicing")
     ax.set_ylabel("Number of candidate events")
     ax.tick_params(axis="x", rotation=30)
 
@@ -990,7 +990,7 @@ def plot_combined_sex_direction(summary: pd.DataFrame, output_dir: Path) -> None
     )
 
     ax.set_title("Sex direction and age persistence of TF–RBP candidate events")
-    ax.set_xlabel("Ages with strict sex-associated splicing")
+    ax.set_xlabel("Ages with sex-associated splicing")
     ax.set_ylabel("Number of candidate events")
     ax.tick_params(axis="x", rotation=30)
     ax.legend()
