@@ -1,0 +1,8 @@
+Age pattern,Male-higher,Female-higher,Mixed direction,Total
+3d,16,12,0,28
+6d,12,13,0,25
+9d,11,9,0,20
+3d + 6d,1,0,2,3
+3d + 9d,0,0,1,1
+6d + 9d,1,0,1,2
+3d + 6d + 9d,0,0,0,0

@@ -1,0 +1,9 @@
+dataset_type,dataset_name,filename,input_rows,unique_event_ids,experiment_count,experiments
+tf,CLAMP,significant_splicing_events_tf - CLAMP.csv,1642,408,2,Brain_Adult | Brain_L3
+tf,FKH,significant_splicing_events_tf - fkh.csv,2292,2174,3,12hr | 14hr | 5_day
+tf,Sox14,significant_splicing_events_tf - Sox14.csv,2583,1330,4,0h_pupae | 12h_pupae | 3rd_instar | 6h_pupae
+tf,vvl,significant_splicing_events_tf - vvl.csv,676,670,2,3_7_day | 3rd_instar
+rbp,Cbp20,significant_splicing_events_rbp - Cbp20.csv,1818,1123,6,Cbp20 | Cbp20_Fsn | Cbp20_dlg1 | Fsn | Pak | dlg1
+rbp,Elav,significant_splicing_events_rbp - Elav.csv,1994,1503,2,Elav | Elav_fne
+rbp,METTL3,significant_splicing_events_rbp - mettl3.csv,1153,901,6,DaGal4_34day | DaGal4_5day | ElavGal4_34day | ElavGal4_5day | RepoGal4_34day | RepoGal4_5day
+rbp,Rbp9,significant_splicing_events_rbp - Rbp9.csv,758,556,2,Rbp9 | fne_Rbp9
