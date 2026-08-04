@@ -208,6 +208,167 @@ def load_event_sets_from_table(
     return event_sets, pd.DataFrame(metadata_rows)
 
 
+def load_full_event_table(data_dir: Path, dataset_type: str) -> pd.DataFrame:
+    """Load the full row-level TF or RBP event table."""
+    combined_name = f"01_all_{dataset_type}_splicing_events.csv"
+    if dataset_type == "rbp":
+        combined_name = "02_all_rbp_splicing_events.csv"
+    elif dataset_type == "tf":
+        combined_name = "01_all_tf_splicing_events.csv"
+
+    combined_path = data_dir / combined_name
+    if combined_path.exists():
+        df = pd.read_csv(combined_path)
+        require_columns(df, ["dataset_name", "event_id"], combined_path.name)
+        return df
+
+    raw_candidates = sorted(
+        data_dir.glob(f"significant_splicing_events_{dataset_type} - *.csv")
+    )
+    if not raw_candidates:
+        raise FileNotFoundError(
+            f"No {dataset_type.upper()} event table found in {data_dir}."
+        )
+
+    raw_candidates, _ = unique_files_by_content(raw_candidates)
+    frames: list[pd.DataFrame] = []
+
+    for path in raw_candidates:
+        df = pd.read_csv(path)
+        require_columns(df, ["event_id"], path.name)
+        df = df.copy()
+        df["dataset_name"] = clean_dataset_name(path, dataset_type)
+        df["source_file"] = path.name
+        frames.append(df)
+
+    return pd.concat(frames, ignore_index=True)
+
+
+def summarize_event_rows(df: pd.DataFrame) -> dict[str, object]:
+    """Compress repeated row-level records for the same exact event."""
+    summary: dict[str, object] = {}
+
+    for column in ["gene_id", "gene_name", "event_type", "event_id"]:
+        if column in df.columns:
+            values = df[column].dropna().astype(str)
+            summary[column] = values.iloc[0] if not values.empty else ""
+
+    if "experiment" in df.columns:
+        experiments = sorted(df["experiment"].dropna().astype(str).unique())
+        summary["experiments"] = " | ".join(experiments)
+        summary["experiment_count"] = len(experiments)
+
+    if "dPSI" in df.columns:
+        summary["dPSI_values"] = " | ".join(
+            df["dPSI"].dropna().astype(str).tolist()
+        )
+
+    if "p_value" in df.columns:
+        summary["p_values"] = " | ".join(
+            df["p_value"].dropna().astype(str).tolist()
+        )
+
+    if "source_file" in df.columns:
+        source_files = sorted(df["source_file"].dropna().astype(str).unique())
+        summary["source_files"] = " | ".join(source_files)
+
+    if "record_id" in df.columns:
+        summary["row_count"] = int(df["record_id"].notna().sum())
+    else:
+        summary["row_count"] = int(len(df))
+
+    return summary
+
+
+def build_jaccard_site_table(
+    tf_table: pd.DataFrame,
+    rbp_table: pd.DataFrame,
+    overlap_statistics: pd.DataFrame,
+) -> pd.DataFrame:
+    """Expand Jaccard matrix cells into site-level rows for the shared events."""
+    records: list[dict[str, object]] = []
+
+    tf_groups = {
+        str(dataset_name): group.copy()
+        for dataset_name, group in tf_table.groupby("dataset_name", dropna=False)
+    }
+    rbp_groups = {
+        str(dataset_name): group.copy()
+        for dataset_name, group in rbp_table.groupby("dataset_name", dropna=False)
+    }
+
+    for _, pair in overlap_statistics.iterrows():
+        shared_count = int(pair["Shared_exact_events"])
+        if shared_count <= 0:
+            continue
+
+        tf_name = str(pair["TF"])
+        rbp_name = str(pair["Regulator"])
+        tf_group = tf_groups.get(tf_name)
+        rbp_group = rbp_groups.get(rbp_name)
+        if tf_group is None or rbp_group is None:
+            continue
+
+        shared_ids = sorted(
+            set(tf_group["event_id"].dropna().astype(str))
+            & set(rbp_group["event_id"].dropna().astype(str))
+        )
+
+        tf_lookup = {
+            str(event_id): summarize_event_rows(group)
+            for event_id, group in tf_group.groupby("event_id", dropna=False)
+        }
+        rbp_lookup = {
+            str(event_id): summarize_event_rows(group)
+            for event_id, group in rbp_group.groupby("event_id", dropna=False)
+        }
+
+        for event_id in shared_ids:
+            tf_summary = tf_lookup.get(event_id, {})
+            rbp_summary = rbp_lookup.get(event_id, {})
+
+            record = {
+                "TF": tf_name,
+                "RBP": rbp_name,
+                "event_id": event_id,
+                "shared_exact_events_in_pair": shared_count,
+                "jaccard_similarity": float(pair["Jaccard_similarity"]),
+                "tf_event_count": int(pair["TF_events"]),
+                "rbp_event_count": int(pair["Regulator_events"]),
+                "percent_of_tf_events": float(pair["Percent_of_TF_events"]),
+                "percent_of_rbp_events": float(pair["Percent_of_regulator_events"]),
+            }
+
+            for prefix, summary in [("tf", tf_summary), ("rbp", rbp_summary)]:
+                record[f"{prefix}_gene_id"] = summary.get("gene_id", "")
+                record[f"{prefix}_gene_name"] = summary.get("gene_name", "")
+                record[f"{prefix}_event_type"] = summary.get("event_type", "")
+                record[f"{prefix}_experiments"] = summary.get("experiments", "")
+                record[f"{prefix}_experiment_count"] = summary.get("experiment_count", 0)
+                record[f"{prefix}_dPSI_values"] = summary.get("dPSI_values", "")
+                record[f"{prefix}_p_values"] = summary.get("p_values", "")
+                record[f"{prefix}_source_files"] = summary.get("source_files", "")
+                record[f"{prefix}_row_count"] = summary.get("row_count", 0)
+
+            record["gene_id"] = tf_summary.get("gene_id", rbp_summary.get("gene_id", ""))
+            record["gene_name"] = tf_summary.get(
+                "gene_name", rbp_summary.get("gene_name", "")
+            )
+            record["event_type"] = tf_summary.get(
+                "event_type", rbp_summary.get("event_type", "")
+            )
+
+            records.append(record)
+
+    result = pd.DataFrame(records)
+    if not result.empty:
+        result = result.sort_values(
+            ["jaccard_similarity", "shared_exact_events_in_pair", "TF", "RBP", "event_id"],
+            ascending=[False, False, True, True, True],
+        ).reset_index(drop=True)
+    return result
+
+
 # ---------------------------------------------------------------------------
 # TF × RBP overlap matrix
 # ---------------------------------------------------------------------------
@@ -855,8 +1016,10 @@ def run_analysis(data_dir: Path, output_dir: Path) -> None:
 
     tf_candidates = sorted(data_dir.glob("significant_splicing_events_tf - *.csv"))
     rbp_candidates = sorted(data_dir.glob("significant_splicing_events_rbp - *.csv"))
-    tf_table = data_dir / "01_all_tf_splicing_events.csv"
-    rbp_table = data_dir / "02_all_rbp_splicing_events.csv"
+    tf_table_path = data_dir / "01_all_tf_splicing_events.csv"
+    rbp_table_path = data_dir / "02_all_rbp_splicing_events.csv"
+    tf_table_df = load_full_event_table(data_dir, "tf")
+    rbp_table_df = load_full_event_table(data_dir, "rbp")
 
     if tf_candidates and rbp_candidates:
         # 1. Remove exact duplicate files by content.
@@ -875,9 +1038,13 @@ def run_analysis(data_dir: Path, output_dir: Path) -> None:
         # 2. Load unique exact event_id sets.
         tf_sets, tf_metadata = load_event_sets(tf_files, "tf")
         rbp_sets, rbp_metadata = load_event_sets(rbp_files, "rbp")
-    elif tf_table.exists() and rbp_table.exists():
-        tf_sets, tf_metadata = load_event_sets_from_table(tf_table, "tf")
-        rbp_sets, rbp_metadata = load_event_sets_from_table(rbp_table, "rbp")
+        tf_table_df = pd.concat([pd.read_csv(path) for path in tf_files], ignore_index=True)
+        rbp_table_df = pd.concat([pd.read_csv(path) for path in rbp_files], ignore_index=True)
+    elif tf_table_path.exists() and rbp_table_path.exists():
+        tf_sets, tf_metadata = load_event_sets_from_table(tf_table_path, "tf")
+        rbp_sets, rbp_metadata = load_event_sets_from_table(rbp_table_path, "rbp")
+        tf_table_df = pd.read_csv(tf_table_path)
+        rbp_table_df = pd.read_csv(rbp_table_path)
     else:
         raise FileNotFoundError(
             "Could not find either the raw significant_splicing_events_*.csv files "
@@ -914,6 +1081,16 @@ def run_analysis(data_dir: Path, output_dir: Path) -> None:
     )
     count_matrix.to_csv(output_dir / "tf_rbp_shared_event_count_matrix.csv")
     jaccard_matrix.to_csv(output_dir / "tf_rbp_jaccard_matrix.csv")
+
+    important_sites = build_jaccard_site_table(
+        tf_table_df,
+        rbp_table_df,
+        overlap_statistics,
+    )
+    important_sites.to_csv(
+        output_dir / "tf_rbp_jaccard_important_sites.csv",
+        index=False,
+    )
 
     # 4. Convert and load the 3d/6d/9d age/sex files.
     age_frames = load_age_files(data_dir)
