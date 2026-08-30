@@ -8,3 +8,6 @@ refs/
 suppa_2/
 suppa_unzip/
 CR40469_SUPPA2_Results.csv
+run_SUPPA2_CR40469.sh
+run_SUPPA2_full.log
+sra_runs.tsv
