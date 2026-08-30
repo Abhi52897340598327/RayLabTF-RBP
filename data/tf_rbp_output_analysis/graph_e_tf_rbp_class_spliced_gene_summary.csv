@@ -1,0 +1,3 @@
+regulator_type,regulator,total_spliced_genes,non_sex_specific_spliced_genes,sex_specific_spliced_genes,percent_non_sex_specific_spliced_genes,percent_sex_specific_spliced_genes
+TF,TF,2336,2248,88,96.23287671232876,3.767123287671233
+RBP,RBP,2759,2648,111,95.97680318956144,4.023196810438565

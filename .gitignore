@@ -1,0 +1,10 @@
+.venv/
+__pycache__/
+*.pyc
+.DS_Store
+
+# Large local/generated analysis inputs and indexes.
+refs/
+suppa_2/
+suppa_unzip/
+CR40469_SUPPA2_Results.csv

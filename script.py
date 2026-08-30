@@ -2,10 +2,16 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import os
 import re
+import tempfile
 from collections import defaultdict
 from pathlib import Path
 from typing import Iterable
+
+cache_root = Path(tempfile.gettempdir())
+os.environ.setdefault("MPLCONFIGDIR", str(cache_root / "matplotlib"))
+os.environ.setdefault("XDG_CACHE_HOME", str(cache_root / "fontconfig-cache"))
 
 import matplotlib
 
@@ -38,6 +44,27 @@ PATTERN_ORDER = {
     "6d": 5,
     "9d": 6,
 }
+
+BAR_FACE_COLORS = ["#ADD8E6", "#000080", "#4682B4"]
+BAR_HATCHES = ["", "///", "xxx"]
+
+plt.rcParams.update(
+    {
+        "font.family": "Times New Roman",
+        "font.size": 8,
+        "axes.labelsize": 10,
+        "axes.titlesize": 10,
+        "xtick.labelsize": 8,
+        "ytick.labelsize": 8,
+        "legend.fontsize": 10,
+        "figure.facecolor": "white",
+        "axes.facecolor": "white",
+        "axes.edgecolor": "black",
+        "axes.linewidth": 1.0,
+        "savefig.facecolor": "white",
+        "hatch.linewidth": 0.7,
+    }
+)
 
 
 # ---------------------------------------------------------------------------
@@ -116,6 +143,31 @@ def save_figure(fig: plt.Figure, output_path: Path, dpi: int = 300) -> None:
     output_path.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(output_path, dpi=dpi, bbox_inches="tight")
     plt.close(fig)
+
+
+def apply_ieee_axes(
+    ax: plt.Axes,
+    keep_all_spines: bool = False,
+    horizontal_grid: bool = False,
+) -> None:
+    """Apply IEEE-style axes with white background and black 1 pt axes."""
+    ax.set_facecolor("white")
+    ax.grid(False)
+    for spine_name, spine in ax.spines.items():
+        spine.set_color("black")
+        spine.set_linewidth(1.0)
+        if not keep_all_spines and spine_name in {"top", "right"}:
+            spine.set_visible(False)
+    ax.tick_params(axis="both", labelsize=8, width=1.0, colors="black")
+
+
+def apply_bar_pattern(bars, face_color: str, hatch: str = "") -> None:
+    """Use grayscale fill plus hatching so bars survive monochrome printing."""
+    for bar in bars:
+        bar.set_facecolor(face_color)
+        bar.set_edgecolor("black")
+        bar.set_linewidth(1.0)
+        bar.set_hatch(hatch)
 
 
 # ---------------------------------------------------------------------------
@@ -435,20 +487,16 @@ def plot_tf_rbp_heatmap(
     ordered_counts = count_matrix.loc[row_order, col_order]
 
     fig, ax = plt.subplots(figsize=(22, 8.5))
-    image = ax.imshow(ordered_jaccard.values, aspect="auto", alpha=0.72)
+    image = ax.imshow(ordered_jaccard.values, aspect="auto", alpha=0.72, cmap="Blues")
 
     ax.set_xticks(np.arange(len(col_order)))
-    ax.set_xticklabels(col_order, rotation=55, ha="right", fontsize=9)
+    ax.set_xticklabels(col_order, rotation=55, ha="right", fontsize=8)
     ax.set_yticks(np.arange(len(row_order)))
-    ax.set_yticklabels(row_order, fontsize=10)
+    ax.set_yticklabels(row_order, fontsize=8)
 
     ax.set_xlabel("RNA-binding protein / RNA-associated regulator")
     ax.set_ylabel("Transcription factor")
-    ax.set_title(
-        "Exact alternative-splicing event overlap between transcription factors "
-        "and RNA-associated regulators\n"
-        "Cell color = Jaccard similarity; cell label = number of shared exact events"
-    )
+    apply_ieee_axes(ax, keep_all_spines=True, horizontal_grid=False)
 
     for row_index in range(len(row_order)):
         for col_index in range(len(col_order)):
@@ -464,42 +512,10 @@ def plot_tf_rbp_heatmap(
 
     colorbar = fig.colorbar(image, ax=ax, fraction=0.025, pad=0.02)
     colorbar.set_label("Jaccard similarity")
+    colorbar.ax.tick_params(labelsize=8, width=1.0)
     fig.tight_layout()
 
     save_figure(fig, output_dir / "tf_rbp_exact_event_overlap_heatmap.png")
-
-    # Save a vector version as well.
-    fig_svg, ax_svg = plt.subplots(figsize=(22, 8.5))
-    image_svg = ax_svg.imshow(ordered_jaccard.values, aspect="auto", alpha=0.72)
-    ax_svg.set_xticks(np.arange(len(col_order)))
-    ax_svg.set_xticklabels(col_order, rotation=55, ha="right", fontsize=9)
-    ax_svg.set_yticks(np.arange(len(row_order)))
-    ax_svg.set_yticklabels(row_order, fontsize=10)
-    ax_svg.set_xlabel("RNA-binding protein / RNA-associated regulator")
-    ax_svg.set_ylabel("Transcription factor")
-    ax_svg.set_title(
-        "Exact alternative-splicing event overlap between transcription factors "
-        "and RNA-associated regulators\n"
-        "Cell color = Jaccard similarity; cell label = number of shared exact events"
-    )
-    for row_index in range(len(row_order)):
-        for col_index in range(len(col_order)):
-            ax_svg.text(
-                col_index,
-                row_index,
-                str(int(ordered_counts.iloc[row_index, col_index])),
-                ha="center",
-                va="center",
-                fontsize=6.5,
-            )
-    colorbar_svg = fig_svg.colorbar(image_svg, ax=ax_svg, fraction=0.025, pad=0.02)
-    colorbar_svg.set_label("Jaccard similarity")
-    fig_svg.tight_layout()
-    fig_svg.savefig(
-        output_dir / "tf_rbp_exact_event_overlap_heatmap.svg",
-        bbox_inches="tight",
-    )
-    plt.close(fig_svg)
 
     return ordered_counts, ordered_jaccard
 
@@ -780,20 +796,16 @@ def plot_age_dpsi_heatmap(result: pd.DataFrame, output_dir: Path) -> None:
 
     masked = np.ma.masked_invalid(matrix)
     norm = TwoSlopeNorm(vmin=-max_abs, vcenter=0.0, vmax=max_abs)
-    image = ax.imshow(masked, aspect="auto", norm=norm)
+    image = ax.imshow(masked, aspect="auto", norm=norm, cmap="Blues")
 
     ax.set_xticks(np.arange(len(AGE_ORDER)))
-    ax.set_xticklabels(["3-day", "6-day", "9-day"], fontsize=11)
+    ax.set_xticklabels(["3-day", "6-day", "9-day"], fontsize=8)
     ax.set_yticks(np.arange(len(result)))
     ax.set_yticklabels(result["plot_label"], fontsize=7.5)
 
     ax.set_xlabel("Age at male-versus-female comparison")
     ax.set_ylabel("Exact TF–RBP candidate splicing event")
-    ax.set_title(
-        "Age and sex association of exact TF–RBP candidate splicing events\n"
-        "Positive dPSI = higher inclusion in males; "
-        "negative dPSI = higher inclusion in females"
-    )
+    apply_ieee_axes(ax, keep_all_spines=True, horizontal_grid=False)
 
     for row_index in range(len(result)):
         for col_index in range(len(AGE_ORDER)):
@@ -816,48 +828,10 @@ def plot_age_dpsi_heatmap(result: pd.DataFrame, output_dir: Path) -> None:
 
     colorbar = fig.colorbar(image, ax=ax, fraction=0.035, pad=0.03)
     colorbar.set_label("Male − female inclusion difference (dPSI)")
+    colorbar.ax.tick_params(labelsize=8, width=1.0)
     fig.tight_layout()
 
     save_figure(fig, output_dir / "tf_rbp_candidate_age_sex_dpsi_heatmap.png")
-
-    # Vector copy.
-    fig_svg, ax_svg = plt.subplots(figsize=(10, fig_height))
-    image_svg = ax_svg.imshow(masked, aspect="auto", norm=norm)
-    ax_svg.set_xticks(np.arange(len(AGE_ORDER)))
-    ax_svg.set_xticklabels(["3-day", "6-day", "9-day"], fontsize=11)
-    ax_svg.set_yticks(np.arange(len(result)))
-    ax_svg.set_yticklabels(result["plot_label"], fontsize=7.5)
-    ax_svg.set_xlabel("Age at male-versus-female comparison")
-    ax_svg.set_ylabel("Exact TF–RBP candidate splicing event")
-    ax_svg.set_title(
-        "Age and sex association of exact TF–RBP candidate splicing events\n"
-        "Positive dPSI = higher inclusion in males; "
-        "negative dPSI = higher inclusion in females"
-    )
-    for row_index in range(len(result)):
-        for col_index in range(len(AGE_ORDER)):
-            if not np.isnan(matrix[row_index, col_index]):
-                ax_svg.text(
-                    col_index,
-                    row_index,
-                    f"{matrix[row_index, col_index]:+.2f}",
-                    ha="center",
-                    va="center",
-                    fontsize=7,
-                )
-    previous_pattern = None
-    for row_index, pattern in enumerate(result["strict_age_pattern"]):
-        if previous_pattern is not None and pattern != previous_pattern:
-            ax_svg.axhline(row_index - 0.5, linewidth=1)
-        previous_pattern = pattern
-    colorbar_svg = fig_svg.colorbar(image_svg, ax=ax_svg, fraction=0.035, pad=0.03)
-    colorbar_svg.set_label("Male − female inclusion difference (dPSI)")
-    fig_svg.tight_layout()
-    fig_svg.savefig(
-        output_dir / "tf_rbp_candidate_age_sex_dpsi_heatmap.svg",
-        bbox_inches="tight",
-    )
-    plt.close(fig_svg)
 
 
 def plot_age_persistence_summary(result: pd.DataFrame, output_dir: Path) -> pd.Series:
@@ -870,10 +844,11 @@ def plot_age_persistence_summary(result: pd.DataFrame, output_dir: Path) -> pd.S
 
     fig, ax = plt.subplots(figsize=(9, 5))
     bars = ax.bar(counts.index, counts.values)
+    apply_bar_pattern(bars, BAR_FACE_COLORS[0])
     ax.set_xlabel("Ages with sex-associated splicing")
     ax.set_ylabel("Number of exact TF–RBP candidate events")
-    ax.set_title("Age specificity and persistence of TF–RBP candidate events")
-    ax.tick_params(axis="x", rotation=30)
+    ax.tick_params(axis="x", rotation=30, labelsize=8)
+    apply_ieee_axes(ax)
 
     for bar, value in zip(bars, counts.values):
         ax.text(
@@ -943,7 +918,6 @@ def classify_sex_direction_by_pattern(result: pd.DataFrame) -> pd.DataFrame:
 def plot_single_direction_bar(
     summary: pd.DataFrame,
     value_column: str,
-    title: str,
     filename: str,
     output_dir: Path,
 ) -> None:
@@ -953,10 +927,11 @@ def plot_single_direction_bar(
 
     fig, ax = plt.subplots(figsize=(10, 5))
     bars = ax.bar(labels, values)
-    ax.set_title(title)
+    apply_bar_pattern(bars, BAR_FACE_COLORS[0])
     ax.set_xlabel("Ages with sex-associated splicing")
     ax.set_ylabel("Number of candidate events")
-    ax.tick_params(axis="x", rotation=30)
+    ax.tick_params(axis="x", rotation=30, labelsize=8)
+    apply_ieee_axes(ax)
 
     for bar, value in zip(bars, values):
         ax.text(
@@ -980,20 +955,23 @@ def plot_combined_sex_direction(summary: pd.DataFrame, output_dir: Path) -> None
     totals = summary["Total"].to_numpy()
 
     fig, ax = plt.subplots(figsize=(11, 6))
-    ax.bar(labels, male, label="Higher inclusion in males")
-    ax.bar(labels, female, bottom=male, label="Higher inclusion in females")
-    ax.bar(
+    male_bars = ax.bar(labels, male, label="Higher inclusion in males")
+    female_bars = ax.bar(labels, female, bottom=male, label="Higher inclusion in females")
+    mixed_bars = ax.bar(
         labels,
         mixed,
         bottom=male + female,
         label="Direction changes across ages",
     )
+    apply_bar_pattern(male_bars, BAR_FACE_COLORS[0], BAR_HATCHES[0])
+    apply_bar_pattern(female_bars, BAR_FACE_COLORS[1], BAR_HATCHES[1])
+    apply_bar_pattern(mixed_bars, BAR_FACE_COLORS[2], BAR_HATCHES[2])
 
-    ax.set_title("Sex direction and age persistence of TF–RBP candidate events")
     ax.set_xlabel("Ages with sex-associated splicing")
     ax.set_ylabel("Number of candidate events")
-    ax.tick_params(axis="x", rotation=30)
-    ax.legend()
+    ax.tick_params(axis="x", rotation=30, labelsize=8)
+    apply_ieee_axes(ax)
+    ax.legend(frameon=False)
 
     for index, total in enumerate(totals):
         ax.text(index, total, str(int(total)), ha="center", va="bottom")
@@ -1123,14 +1101,12 @@ def run_analysis(data_dir: Path, output_dir: Path) -> None:
     plot_single_direction_bar(
         sex_summary,
         value_column="Male-higher",
-        title="Male-higher TF–RBP candidate splicing events by age pattern",
         filename="tf_rbp_candidate_age_persistence_male_higher.png",
         output_dir=output_dir,
     )
     plot_single_direction_bar(
         sex_summary,
         value_column="Female-higher",
-        title="Female-higher TF–RBP candidate splicing events by age pattern",
         filename="tf_rbp_candidate_age_persistence_female_higher.png",
         output_dir=output_dir,
     )
