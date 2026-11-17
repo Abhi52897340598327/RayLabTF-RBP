@@ -1,0 +1,72 @@
+RBP,Source,experiment,Study,Tissue / stage,Flag,Events
+AGO2,New SUPPA2 run (Nov 2026),GSE285324_Ago2_head,GSE285324,head,,259
+Atx2,New SUPPA2 run (Nov 2026),GSE185473_Atx2-RNAi_brain,GSE185473,brain,,290
+Atx2,New SUPPA2 run (Nov 2026),GSE234468_Atx2-RNAi_brain,GSE234468,brain,,321
+Atx2,New SUPPA2 run (Nov 2026),GSE234468_Atx2-RNAi_on-TDP-43_brain,GSE234468,brain,,475
+CG1316,Original analysis,CG1316,,CG1316,Likely same dataset as new comparison GSE126628_CG1316-RNAi_female-brain (female brains),353
+CG15721,New SUPPA2 run (Nov 2026),GSE243715_65K-KD_head,GSE243715,head,,474
+CG4612,Original analysis,CG4612,,CG4612,Likely same dataset as new comparison GSE126628_CG4612-RNAi_female-brain (female brains),249
+Cbp20,New SUPPA2 run (Nov 2026),SRP188078_Cbp20-Fsn-RNAi_head,SRP188078,head,Likely same dataset as the original analysis,851
+Cbp20,New SUPPA2 run (Nov 2026),SRP188078_Cbp20-RNAi_head,SRP188078,head,Likely same dataset as the original analysis,382
+Cbp20,New SUPPA2 run (Nov 2026),SRP188078_Cbp20-dlg1-RNAi_head,SRP188078,head,Likely same dataset as the original analysis,723
+Cbp20,Original analysis,Cbp20,,Cbp20,Likely same dataset as new comparison SRP188078_Cbp20-RNAi_head,189
+Cbp20,Original analysis,Cbp20_Fsn,,Cbp20_Fsn,Likely same dataset as new comparison SRP188078_Cbp20-Fsn-RNAi_head,396
+Cbp20,Original analysis,Cbp20_dlg1,,Cbp20_dlg1,Likely same dataset as new comparison SRP188078_Cbp20-dlg1-RNAi_head,342
+Cbp20,Original analysis,Fsn,,Fsn,"Partner-gene knockdown from the Cbp20 study (SRP188078); not an RBP, not in the new run",433
+Cbp20,Original analysis,Pak,,Pak,"Partner-gene knockdown from the Cbp20 study (SRP188078); not an RBP, not in the new run",190
+Cbp20,Original analysis,dlg1,,dlg1,"Partner-gene knockdown from the Cbp20 study (SRP188078); not an RBP, not in the new run",268
+Fmr1,Original analysis,Fmr1,,Fmr1,Likely same dataset as new comparison GSE126628_Fmr1-RNAi_female-brain (female brains),244
+Hrb87F,Original analysis,Hrb87F,,Hrb87F,,180
+Hrb98DE,Original analysis,Hrb98DE,,Hrb98DE,Likely same dataset as new comparison GSE126628_Hrb98DE-RNAi_female-brain (female brains),347
+Imp,Original analysis,Imp,,Imp,,146
+Iswi,Original analysis,ISWI,,ISWI,,178
+Mettl3,Original analysis,DaGal4_34day,,DaGal4_34day,,290
+Mettl3,Original analysis,DaGal4_5day,,DaGal4_5day,,207
+Mettl3,Original analysis,ElavGal4_34day,,ElavGal4_34day,,131
+Mettl3,Original analysis,ElavGal4_5day,,ElavGal4_5day,,307
+Mettl3,Original analysis,RepoGal4_34day,,RepoGal4_34day,,93
+Mettl3,Original analysis,RepoGal4_5day,,RepoGal4_5day,,125
+Nab2,New SUPPA2 run (Nov 2026),SRP295531_Nab2-null_head,SRP295531,head (pooled sex),,401
+Nelf-E,Original analysis,Nelf-E,,Nelf-E,,495
+Ppil4,New SUPPA2 run (Nov 2026),SRP572208_Ppil4-RNAi_head,SRP572208,head,,125
+Prp19,New SUPPA2 run (Nov 2026),SRP468160_Prp19-RNAi_brain,SRP468160,brain,Likely same dataset as the original analysis,1012
+Prp19,Original analysis,prp19,,prp19,Likely same dataset as new comparison SRP468160_Prp19-RNAi_brain,1201
+Prp3,New SUPPA2 run (Nov 2026),SRP574019_Prp3-RNAi_clock-neurons,SRP574019,adult brain (clock neurons),,177
+Rbp6,Original analysis,Rbp6,,Rbp6,Likely same dataset as new comparison GSE126628_Rbp6-RNAi_female-brain (female brains),244
+Rbp9,New SUPPA2 run (Nov 2026),SRP336388_Rbp9-null_head,SRP336388,head,Likely same dataset as the original analysis,235
+Rbp9,New SUPPA2 run (Nov 2026),SRP336388_fne-Rbp9-double-null_head,SRP336388,head,Likely same dataset as the original analysis,376
+Rbp9,Original analysis,Rbp9,,Rbp9,Likely same dataset as new comparison SRP336388_Rbp9-null_head,349
+Rbp9,Original analysis,fne_Rbp9,,fne_Rbp9,Likely same dataset as new comparison SRP336388_fne-Rbp9-double-null_head,409
+Rin,Original analysis,Rin,,Rin,,131
+Set1,Original analysis,Set1,,Set1,,83
+Sxl,Original analysis,Sxl,,Sxl,,303
+Syp,New SUPPA2 run (Nov 2026),SRP147934_Syp-RNAi_in-pros-RNAi_VNC,SRP147934,ventral nerve cord,,1004
+Syp,New SUPPA2 run (Nov 2026),SRP250266_SypN_brain,SRP250266,larval brain,Likely same dataset as the original analysis,164
+Syp,Original analysis,Syp,,Syp,Likely same dataset as new comparison SRP250266_SypN_brain,191
+TBPH,New SUPPA2 run (Nov 2026),GSE31194_TBPH-mutant_larval-CNS,GSE31194,larval CNS,,108
+TBPH,New SUPPA2 run (Nov 2026),GSE42844_TBPH-LOF_pupal-head,GSE42844,pupal head,,178
+TBPH,Original analysis,TBPH,,TBPH,,154
+U2af50,New SUPPA2 run (Nov 2026),SRP468160_U2af50-RNAi_brain,SRP468160,brain,Likely same dataset as the original analysis,454
+U2af50,Original analysis,U2af50,,U2af50,Likely same dataset as new comparison SRP468160_U2af50-RNAi_brain,533
+barc,New SUPPA2 run (Nov 2026),SRP101797_barc-RNAi_neuroblasts,SRP101797,larval brain type I neuroblasts (sorted),,1033
+caz,Original analysis,caz,,caz,Likely same dataset as new comparison GSE126628_caz-RNAi_female-brain (female brains),231
+eIF4H1,Original analysis,eIF4H1,,eIF4H1,Likely same dataset as new comparison GSE126628_eIF4H1-RNAi_female-brain (female brains),178
+elav,New SUPPA2 run (Nov 2026),GSE155534_elav-fne-double_L1-CNS,GSE155534,L1 CNS,Likely same dataset as the original analysis,2716
+elav,New SUPPA2 run (Nov 2026),GSE155534_elav-mutant_L1-CNS,GSE155534,L1 CNS,,1203
+elav,Original analysis,Elav,,Elav,Likely same dataset as new comparison GSE155534_elav-fne-double_L1-CNS,869
+elav,Original analysis,Elav_fne,,Elav_fne,Likely same dataset as new comparison GSE155534_elav-fne-double_L1-CNS,1125
+fne,New SUPPA2 run (Nov 2026),GSE155534_elav-fne-double_L1-CNS,GSE155534,L1 CNS,Likely same dataset as the original analysis,2716
+fne,New SUPPA2 run (Nov 2026),GSE37811_fne-mutant_head,GSE37811,head (pooled sex),,59
+fne,New SUPPA2 run (Nov 2026),SRP336388_fne-Rbp9-double-null_head,SRP336388,head,Likely same dataset as the original analysis,376
+fne,New SUPPA2 run (Nov 2026),SRP336388_fne-null_head,SRP336388,head,Likely same dataset as the original analysis,292
+fne,Original analysis,fne,,fne,Likely same dataset as new comparison SRP336388_fne-null_head,363
+fne,Original analysis,fne_Rbp9,,fne_Rbp9,Likely same dataset as new comparison SRP336388_fne-Rbp9-double-null_head,409
+mod,Original analysis,brain,,brain,mod is classed as a TF in the new runs (see TF master),365
+nonA,New SUPPA2 run (Nov 2026),SRP151586_nonA-RNAi_DvPdf-neurons,SRP151586,DvPdf clock neurons (sorted),Likely same dataset as the original analysis,205
+nonA,Original analysis,NonA,,NonA,Likely same dataset as new comparison SRP151586_nonA-RNAi_DvPdf-neurons,211
+orb2,New SUPPA2 run (Nov 2026),SRP500383_orb2-RNAi_larval-brain,SRP500383,larval brain,Likely same dataset as the original analysis,336
+orb2,Original analysis,Orb2,,Orb2,Likely same dataset as new comparison SRP500383_orb2-RNAi_larval-brain,250
+pcm,New SUPPA2 run (Nov 2026),SRP593879_pcm-RNAi_brain,SRP593879,adult brain,,138
+pum,New SUPPA2 run (Nov 2026),GSE319953_pum-RNAi_head,GSE319953,head,,98
+shep,Original analysis,shep,,shep,Likely same dataset as new comparison GSE126628_shep-RNAi_female-brain (female brains),218
+sqd,Original analysis,Sqd,,Sqd,,162

@@ -1,0 +1,44 @@
+sheet,csv_file,rows_including_header
+README,README.csv,8
+Combined summary,Combined summary.csv,38
+Summary by source,Summary by source.csv,48
+Comparisons,Comparisons.csv,72
+Original vs new overlap,Original vs new overlap.csv,42
+All events,All events.csv,30324
+AGO2,AGO2.csv,260
+Atx2,Atx2.csv,1087
+barc,barc.csv,1034
+caz,caz.csv,232
+Cbp20,Cbp20.csv,3775
+CG1316,CG1316.csv,354
+CG15721,CG15721.csv,475
+CG4612,CG4612.csv,250
+eIF4H1,eIF4H1.csv,179
+elav,elav.csv,5914
+Fmr1,Fmr1.csv,245
+fne,fne.csv,4216
+Hrb87F,Hrb87F.csv,181
+Hrb98DE,Hrb98DE.csv,348
+Imp,Imp.csv,147
+Iswi,Iswi.csv,179
+Mettl3,Mettl3.csv,1154
+mod,mod.csv,366
+Nab2,Nab2.csv,402
+Nelf-E,Nelf-E.csv,496
+nonA,nonA.csv,417
+orb2,orb2.csv,587
+pcm,pcm.csv,139
+Ppil4,Ppil4.csv,126
+Prp19,Prp19.csv,2214
+Prp3,Prp3.csv,178
+pum,pum.csv,99
+Rbp6,Rbp6.csv,245
+Rbp9,Rbp9.csv,1370
+Rin,Rin.csv,132
+Set1,Set1.csv,84
+shep,shep.csv,219
+sqd,sqd.csv,163
+Sxl,Sxl.csv,304
+Syp,Syp.csv,1360
+TBPH,TBPH.csv,441
+U2af50,U2af50.csv,988

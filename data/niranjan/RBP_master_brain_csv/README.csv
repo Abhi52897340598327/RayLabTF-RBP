@@ -1,0 +1,8 @@
+Item,Detail
+What,"Master table of significant splicing events (SUPPA2, p < 0.05, no dPSI cutoff) for every RBP: your original analysis + the new brain SUPPA2 runs (sex not specified + pooled-sex ""Mixed""; all ages)."
+RBPs,"37 (18 original only, 9 new only, 10 in both)"
+Events,"30,323 (13,142 original, 17,181 new). Double-mutant comparisons are listed under each mutated gene."
+Same data,"23 of 41 original experiments share far more events with one new comparison than with any other (Jaccard >= 0.07 for the same gene, background ~0.04-0.05) - likely the same dataset analysed twice. See the 'Original vs new overlap' sheet and the Flag column."
+Female screen,"Original caz, CG1316, CG4612, eIF4H1, Fmr1, Hrb98DE, Rbp6 and shep match the GSE126628 female-brain RNAi screen. They are kept here as in your original file; the new GSE126628 results are in RBP_master_sex_specific.xlsx."
+Names,"Sheet names changed to FlyBase symbols: NonA->nonA, Sqd->sqd, Elav->elav, Orb2->orb2, prp19->Prp19, mettl3->Mettl3, ISWI->Iswi"
+Colours,"Source column: yellow = original analysis, green = new SUPPA2 run"

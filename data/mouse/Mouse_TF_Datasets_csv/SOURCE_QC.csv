@@ -1,0 +1,10 @@
+Source,Associations
+BioStudies,773
+BioStudies/ArrayExpress,5078
+ChIP-Atlas,17072
+ENA,320665
+ENCODE,172
+NCBI GEO,716897
+NCBI SRA,315049
+QC notice,Counts do not establish unique study coverage
+QC notice,Metadata-derived labels require verification

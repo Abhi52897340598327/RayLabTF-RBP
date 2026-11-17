@@ -1,0 +1,8 @@
+Item,Detail
+What,"Master table of significant splicing events (SUPPA2, p < 0.05, no dPSI cutoff) for every TF: your original analysis + the new brain SUPPA2 run (sex not specified, all ages)."
+TFs,"28 (7 original only, 20 new only, 1 in both)"
+Events,"16,489 (8,690 original, 7,799 new)"
+Sheets,Combined summary (one row per TF) - Summary by source - Comparisons - All events (filterable) - one sheet per TF
+Columns,"Same as your original files, plus TF, Source, Study, Tissue / stage, Flag. gene_name now has FlyBase symbols where available."
+Colours,"Source column: yellow = original analysis, green = new SUPPA2 run"
+Not included here,"Sex-specific TF results (female-only: foxo, Clk, mod; male-only: CrebB, kay, nej) are in TF_master_sex_specific.xlsx. Round-4 brain TFs will be added after they run."

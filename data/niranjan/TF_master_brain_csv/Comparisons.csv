@@ -1,0 +1,37 @@
+TF,Source,experiment,Study,Tissue / stage,Events
+BEAF-32,Original analysis,0_3_day,,0_3_day,204
+Clamp,Original analysis,Brain_Adult,,Brain_Adult,602
+Clamp,Original analysis,Brain_L3,,Brain_L3,1040
+CrebB,New SUPPA2 run (Nov 2026),SRP278249_CREB-mut_head,SRP278249,head,30
+Drgx,New SUPPA2 run (Nov 2026),GSE253078_Drgx-RNAi_T4T5,GSE253078,T4/T5 optic-lobe neurons,202
+EcR,New SUPPA2 run (Nov 2026),GSE101946_EcR-DN_gamma-neurons,GSE101946,brain (isolated MB gamma neurons),47
+Eip75B,New SUPPA2 run (Nov 2026),GSE101946_E75-RNAi_gamma-neurons,GSE101946,brain (isolated MB gamma neurons),34
+Mi-2,New SUPPA2 run (Nov 2026),GSE199146_Mi-2-RNAi,GSE199146,developing (larval) brain,604
+Rfx,New SUPPA2 run (Nov 2026),GSE132895_Rfx-KO_larval-brain-neurons,GSE132895,larval brain neurons,63
+Sox14,New SUPPA2 run (Nov 2026),GSE101946_Sox14-RNAi_gamma-neurons,GSE101946,brain (isolated MB gamma neurons),43
+Sox14,Original analysis,0h_pupae,,0h_pupae,502
+Sox14,Original analysis,12h_pupae,,12h_pupae,777
+Sox14,Original analysis,3rd_instar,,3rd_instar,634
+Sox14,Original analysis,6h_pupae,,6h_pupae,670
+Taf9,New SUPPA2 run (Nov 2026),GSE120430_Taf9-RNAi_NSC,GSE120430,larval brain type I neural stem cells (FACS),259
+Tbp,New SUPPA2 run (Nov 2026),GSE120430_Tbp-RNAi_NSC,GSE120430,larval brain type I neural stem cells (FACS),360
+Trf2,New SUPPA2 run (Nov 2026),GSE120430_Trf2-RNAi_NSC,GSE120430,larval brain type I neural stem cells (FACS),262
+Trl,New SUPPA2 run (Nov 2026),GSE270071_GAF-RNAi_brain,GSE270071,larval brain,466
+Ubx,Original analysis,3rd_instar_brain,,3rd_instar_brain,822
+acj6,New SUPPA2 run (Nov 2026),GSE200841_acj6-mutant_adPN,GSE200841,pupal brain projection neurons (adPN),244
+cwo,New SUPPA2 run (Nov 2026),GSE165043_cwo-mutant_head,GSE165043,head,205
+dsx,Original analysis,VNC,,VNC,175
+erm,New SUPPA2 run (Nov 2026),GSE163308_erm-dFezf1-mutant_L3,GSE163308,pupal L3 lamina neurons,82
+fkh,Original analysis,12hr,,12hr,158
+fkh,Original analysis,14hr,,14hr,195
+fkh,Original analysis,5_day,,5_day,1939
+lola,New SUPPA2 run (Nov 2026),GSE306602_lola-mutant_optic-lobe,GSE306602,optic lobe,88
+mod,New SUPPA2 run (Nov 2026),GSE240478_mod_head,GSE240478,head,268
+nerfin-1,New SUPPA2 run (Nov 2026),GSE306602_nerfin-1-mutant_optic-lobe,GSE306602,optic lobe,109
+p53,New SUPPA2 run (Nov 2026),GSE109292_p53-mutant_head,GSE109292,head,941
+pdm3,New SUPPA2 run (Nov 2026),GSE147337_pdm3-RNAi_pupal-brain,GSE147337,pupal brain,192
+pros,New SUPPA2 run (Nov 2026),SRP147934_pros-RNAi_VNC,SRP147934,ventral nerve cord,3053
+repo,Original analysis,embryonic_vs_larval,,embryonic_vs_larval,296
+vri,New SUPPA2 run (Nov 2026),GSE154785_vri-mutant_head,GSE154785,head,247
+vvl,Original analysis,3_7_day,,3_7_day,592
+vvl,Original analysis,3rd_instar,,3rd_instar,84

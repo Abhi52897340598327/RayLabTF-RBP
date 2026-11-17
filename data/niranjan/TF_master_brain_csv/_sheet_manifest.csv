@@ -1,0 +1,34 @@
+sheet,csv_file,rows_including_header
+README,README.csv,8
+Combined summary,Combined summary.csv,29
+Summary by source,Summary by source.csv,30
+Comparisons,Comparisons.csv,37
+All events,All events.csv,16490
+acj6,acj6.csv,245
+BEAF-32,BEAF-32.csv,205
+Clamp,Clamp.csv,1643
+CrebB,CrebB.csv,31
+cwo,cwo.csv,206
+Drgx,Drgx.csv,203
+dsx,dsx.csv,176
+EcR,EcR.csv,48
+Eip75B,Eip75B.csv,35
+erm,erm.csv,83
+fkh,fkh.csv,2293
+lola,lola.csv,89
+Mi-2,Mi-2.csv,605
+mod,mod.csv,269
+nerfin-1,nerfin-1.csv,110
+p53,p53.csv,942
+pdm3,pdm3.csv,193
+pros,pros.csv,3054
+repo,repo.csv,297
+Rfx,Rfx.csv,64
+Sox14,Sox14.csv,2627
+Taf9,Taf9.csv,260
+Tbp,Tbp.csv,361
+Trf2,Trf2.csv,263
+Trl,Trl.csv,467
+Ubx,Ubx.csv,823
+vri,vri.csv,248
+vvl,vvl.csv,677

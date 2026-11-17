@@ -1,0 +1,30 @@
+TF,Source,A3,A5,AF,AL,MX,RI,SE,Total
+BEAF-32,Original analysis,28,43,42,3,14,29,45,204
+Clamp,Original analysis,320,356,442,36,15,326,147,1642
+CrebB,New SUPPA2 run (Nov 2026),6,6,1,1,5,5,6,30
+Drgx,New SUPPA2 run (Nov 2026),32,28,41,10,21,27,43,202
+EcR,New SUPPA2 run (Nov 2026),16,10,8,1,4,2,6,47
+Eip75B,New SUPPA2 run (Nov 2026),7,7,8,0,1,6,5,34
+Mi-2,New SUPPA2 run (Nov 2026),107,86,155,32,39,71,114,604
+Rfx,New SUPPA2 run (Nov 2026),15,17,9,0,4,11,7,63
+Sox14,New SUPPA2 run (Nov 2026),9,15,10,2,4,1,2,43
+Sox14,Original analysis,478,569,559,23,113,384,457,2583
+Taf9,New SUPPA2 run (Nov 2026),37,55,58,10,10,40,49,259
+Tbp,New SUPPA2 run (Nov 2026),55,72,81,6,21,72,53,360
+Trf2,New SUPPA2 run (Nov 2026),51,64,44,8,10,34,51,262
+Trl,New SUPPA2 run (Nov 2026),69,82,120,20,11,65,99,466
+Ubx,Original analysis,104,108,95,23,271,80,141,822
+acj6,New SUPPA2 run (Nov 2026),48,44,65,6,4,39,38,244
+cwo,New SUPPA2 run (Nov 2026),44,39,33,9,6,29,45,205
+dsx,Original analysis,31,28,38,4,10,28,36,175
+erm,New SUPPA2 run (Nov 2026),15,14,21,1,5,9,17,82
+fkh,Original analysis,364,482,614,62,81,316,373,2292
+lola,New SUPPA2 run (Nov 2026),14,13,13,1,13,12,22,88
+mod,New SUPPA2 run (Nov 2026),50,45,50,18,14,41,50,268
+nerfin-1,New SUPPA2 run (Nov 2026),14,16,19,8,14,14,24,109
+p53,New SUPPA2 run (Nov 2026),190,196,183,29,17,127,199,941
+pdm3,New SUPPA2 run (Nov 2026),44,41,36,5,12,32,22,192
+pros,New SUPPA2 run (Nov 2026),492,483,702,166,128,332,750,3053
+repo,Original analysis,44,48,103,7,12,35,47,296
+vri,New SUPPA2 run (Nov 2026),54,57,47,13,11,23,42,247
+vvl,Original analysis,91,157,153,16,15,102,142,676

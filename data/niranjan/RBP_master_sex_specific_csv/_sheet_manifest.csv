@@ -1,0 +1,22 @@
+sheet,csv_file,rows_including_header
+Summary,Summary.csv,20
+All events,All events.csv,5040
+F_Adar,F_Adar.csv,81
+F_CG1316,F_CG1316.csv,432
+F_CG4612,F_CG4612.csv,232
+F_Fmr1,F_Fmr1.csv,423
+F_Hrb87F,F_Hrb87F.csv,138
+F_Hrb98DE,F_Hrb98DE.csv,312
+F_Irp-1A,F_Irp-1A.csv,189
+F_Rbp6,F_Rbp6.csv,239
+F_Rsf1,F_Rsf1.csv,180
+F_Zn72D,F_Zn72D.csv,113
+F_caz,F_caz.csv,205
+F_eIF4H1,F_eIF4H1.csv,146
+F_hfp,F_hfp.csv,343
+F_mub,F_mub.csv,360
+F_ps,F_ps.csv,418
+F_pum,F_pum.csv,512
+F_qkr58E-2,F_qkr58E-2.csv,334
+F_shep,F_shep.csv,208
+F_yps,F_yps.csv,193

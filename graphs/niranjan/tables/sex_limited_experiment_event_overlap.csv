@@ -1,0 +1,26 @@
+regulator_type,regulator,sex_set,unique_events_in_sex_set,unique_events_in_brain_set,exact_events_shared_with_brain_set
+TF,Clk,Female only,3,0,0
+TF,CrebB,Male only,109,30,3
+TF,foxo,Female only,189,0,0
+TF,kay,Male only,79,0,0
+TF,mod,Female only,434,268,26
+TF,nej,Male only,205,0,0
+RBP,Adar,Female only,80,0,0
+RBP,CG1316,Female only,431,353,135
+RBP,CG4612,Female only,231,249,94
+RBP,Fmr1,Female only,422,244,117
+RBP,Hrb87F,Female only,137,180,7
+RBP,Hrb98DE,Female only,311,347,133
+RBP,Irp-1A,Female only,188,0,0
+RBP,Rbp6,Female only,238,244,84
+RBP,Rsf1,Female only,179,0,0
+RBP,Zn72D,Female only,112,0,0
+RBP,caz,Female only,204,231,94
+RBP,eIF4H1,Female only,145,178,61
+RBP,hfp,Female only,342,0,0
+RBP,mub,Female only,359,0,0
+RBP,ps,Female only,417,0,0
+RBP,pum,Female only,511,98,18
+RBP,qkr58E-2,Female only,333,0,0
+RBP,shep,Female only,207,218,88
+RBP,yps,Female only,192,0,0

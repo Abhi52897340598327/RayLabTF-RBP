@@ -1,0 +1,17 @@
+Metric,Associations
+Total,1375706
+Brain tissue-field match,48462
+Brain title-only match,13200
+Brain Male,2423
+Brain Female,1554
+Brain Mixed,141
+Brain Unknown,57544
+With GSE mentions,80821
+With GSM mentions,635011
+With experiment accessions,652786
+With run accessions,315027
+Control candidates,97345
+Experiment candidates,75159
+Ambiguous group candidates,19473
+Unresolved group,1183729
+Unclassified original technique,955127
