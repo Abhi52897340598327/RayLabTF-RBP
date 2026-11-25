@@ -107,54 +107,54 @@ def bar(values, title, xlabel, path, color='#4169a1'):
     fig.savefig(path,dpi=200,bbox_inches='tight'); plt.close(fig)
 
 
-def mouse():
-    base=GRAPHS/'mouse'; fig=base/'figures'; tables=base/'tables'
-    fig.mkdir(parents=True,exist_ok=True); tables.mkdir(parents=True,exist_ok=True)
-    catalog={}
-    for kind, folder in [('TF','Mouse_TF_Datasets_csv'),('RBP','Mouse_RBP_Datasets (2)_csv')]:
-        directory=DATA/'mouse'/folder
-        manifest=pd.read_csv(directory/'_sheet_manifest.csv')
-        paths=[directory / f for f in manifest.csv_file if not re.match(r'^(README|SUMMARY|TECHNIQUE_COUNTS|SOURCE_QC)\.csv$',f,re.I)]
-        chunks=[]
-        for path in paths:
-            for chunk in pd.read_csv(path,usecols=lambda c:c in ['Gene','Accession','Source','Technique','Tissue','Sex'],dtype=str,chunksize=100000,low_memory=False):
-                chunk['sheet']=path.stem
-                chunks.append(chunk.dropna(subset=['Gene','Accession']))
-        df=pd.concat(chunks,ignore_index=True).fillna('')
-        for col in ('Gene','Accession','Source','Technique','Tissue','Sex'):
-            if col not in df: df[col]=''
-            df[col]=df[col].str.strip()
-        df=df[(df.Gene!='') & (df.Accession!='')].copy()
-        catalog[kind]=df
-        # Dataset accession overlap is a catalog match; identifiers of different
-        # levels/sources are not assumed equivalent.
-        gene_counts=df.groupby('Gene').Accession.nunique().sort_values(ascending=False).rename('unique_accessions').reset_index()
-        gene_counts.to_csv(tables/f'{kind.lower()}_accessions_by_gene.csv',index=False)
-        tech=df.groupby('Technique').agg(association_rows=('Accession','size'),unique_accessions=('Accession','nunique'),genes=('Gene','nunique')).sort_values('association_rows',ascending=False)
-        tech.to_csv(tables/f'{kind.lower()}_technique_summary.csv')
-        bar(gene_counts.set_index('Gene').unique_accessions,f'Mouse {kind}: catalog coverage by gene','Unique accession identifiers',fig/f'{kind.lower()}_top_genes_by_accession.png')
-        bar(tech.association_rows,f'Mouse {kind}: associations by technique','Gene–dataset association rows',fig/f'{kind.lower()}_associations_by_technique.png')
-    # Deduplicate accession/gene pairs; source can contain the same identifier.
-    left=catalog['TF'][['Gene','Accession']].drop_duplicates().rename(columns={'Gene':'TF'})
-    right=catalog['RBP'][['Gene','Accession']].drop_duplicates().rename(columns={'Gene':'RBP'})
-    shared=left.merge(right,on='Accession',how='inner')
-    shared.sort_values(['TF','RBP','Accession']).to_csv(tables/'tf_rbp_shared_accessions.csv',index=False)
-    tfsize=left.groupby('TF').Accession.nunique(); rbpsize=right.groupby('RBP').Accession.nunique()
-    pairs=shared.groupby(['TF','RBP']).Accession.nunique().rename('shared_accessions').reset_index()
-    pairs['tf_accessions']=pairs.TF.map(tfsize); pairs['rbp_accessions']=pairs.RBP.map(rbpsize)
-    pairs['jaccard_similarity']=pairs.shared_accessions/(pairs.tf_accessions+pairs.rbp_accessions-pairs.shared_accessions)
-    pairs.sort_values(['shared_accessions','jaccard_similarity'],ascending=False).to_csv(tables/'tf_rbp_shared_accession_statistics.csv',index=False)
-    if not pairs.empty:
-        top_tf=pairs.groupby('TF').shared_accessions.sum().nlargest(20).index
-        top_rbp=pairs.groupby('RBP').shared_accessions.sum().nlargest(20).index
-        matrix=pairs.pivot(index='TF',columns='RBP',values='shared_accessions').reindex(index=top_tf,columns=top_rbp).fillna(0)
-        matrix.to_csv(tables/'top_tf_rbp_shared_accession_matrix.csv')
-        f,ax=plt.subplots(figsize=(max(9,len(top_rbp)*.55),max(6,len(top_tf)*.4)))
-        im=ax.imshow(matrix,aspect='auto',cmap='Blues'); ax.set_xticks(range(len(matrix.columns)),matrix.columns,rotation=60,ha='right'); ax.set_yticks(range(len(matrix.index)),matrix.index)
-        ax.set_title('Mouse catalog: shared accession identifiers (top genes)'); ax.set_xlabel('RBP'); ax.set_ylabel('TF'); f.colorbar(im,ax=ax,label='Shared accessions'); f.tight_layout(); f.savefig(fig/'tf_rbp_shared_accession_heatmap.png',dpi=200,bbox_inches='tight'); plt.close(f)
-    (base/'README.md').write_text('''# Mouse catalog analysis\n\nThe mouse inputs are catalogs of gene–dataset associations, not alternative-splicing event results. Therefore exact splicing-event overlap, age persistence, and sex-differential splicing cannot be computed from these files. Figures summarize catalog coverage and exact shared accession identifiers instead. A shared accession means the same identifier appears beside both genes; it does not establish a shared splicing event, direct regulation, or even that either gene was experimentally perturbed.\n\nAll technique sheets, including split and unclassified sheets, are included; summary/readme sheets are excluded. Catalog rows with missing gene or accession are excluded. The top-gene charts count distinct accession strings per gene; technique charts count association rows, not unique studies. Pair statistics deduplicate gene/accession pairs and use exact accession strings; different identifier types or aliases are not reconciled. Only nonzero pairs are in the statistics table; the heatmap shows up to 20 genes per class ranked by total pairwise overlap. Entries, gene associations, tissues and identifiers require source-level verification. Tables are in `tables/`.\n''')
-    print(f'Mouse: {len(catalog["TF"]):,} TF rows, {len(catalog["RBP"]):,} RBP rows, {len(pairs):,} nonzero shared-accession pairs',flush=True)
+# def mouse():
+#     base=GRAPHS/'mouse'; fig=base/'figures'; tables=base/'tables'
+#     fig.mkdir(parents=True,exist_ok=True); tables.mkdir(parents=True,exist_ok=True)
+#     catalog={}
+#     for kind, folder in [('TF','Mouse_TF_Datasets_csv'),('RBP','Mouse_RBP_Datasets (2)_csv')]:
+#         directory=DATA/'mouse'/folder
+#         manifest=pd.read_csv(directory/'_sheet_manifest.csv')
+#         paths=[directory / f for f in manifest.csv_file if not re.match(r'^(README|SUMMARY|TECHNIQUE_COUNTS|SOURCE_QC)\.csv$',f,re.I)]
+#         chunks=[]
+#         for path in paths:
+#             for chunk in pd.read_csv(path,usecols=lambda c:c in ['Gene','Accession','Source','Technique','Tissue','Sex'],dtype=str,chunksize=100000,low_memory=False):
+#                 chunk['sheet']=path.stem
+#                 chunks.append(chunk.dropna(subset=['Gene','Accession']))
+#         df=pd.concat(chunks,ignore_index=True).fillna('')
+#         for col in ('Gene','Accession','Source','Technique','Tissue','Sex'):
+#             if col not in df: df[col]=''
+#             df[col]=df[col].str.strip()
+#         df=df[(df.Gene!='') & (df.Accession!='')].copy()
+#         catalog[kind]=df
+#         # Dataset accession overlap is a catalog match; identifiers of different
+#         # levels/sources are not assumed equivalent.
+#         gene_counts=df.groupby('Gene').Accession.nunique().sort_values(ascending=False).rename('unique_accessions').reset_index()
+#         gene_counts.to_csv(tables/f'{kind.lower()}_accessions_by_gene.csv',index=False)
+#         tech=df.groupby('Technique').agg(association_rows=('Accession','size'),unique_accessions=('Accession','nunique'),genes=('Gene','nunique')).sort_values('association_rows',ascending=False)
+#         tech.to_csv(tables/f'{kind.lower()}_technique_summary.csv')
+#         bar(gene_counts.set_index('Gene').unique_accessions,f'Mouse {kind}: catalog coverage by gene','Unique accession identifiers',fig/f'{kind.lower()}_top_genes_by_accession.png')
+#         bar(tech.association_rows,f'Mouse {kind}: associations by technique','Gene–dataset association rows',fig/f'{kind.lower()}_associations_by_technique.png')
+#     # Deduplicate accession/gene pairs; source can contain the same identifier.
+#     left=catalog['TF'][['Gene','Accession']].drop_duplicates().rename(columns={'Gene':'TF'})
+#     right=catalog['RBP'][['Gene','Accession']].drop_duplicates().rename(columns={'Gene':'RBP'})
+#     shared=left.merge(right,on='Accession',how='inner')
+#     shared.sort_values(['TF','RBP','Accession']).to_csv(tables/'tf_rbp_shared_accessions.csv',index=False)
+#     tfsize=left.groupby('TF').Accession.nunique(); rbpsize=right.groupby('RBP').Accession.nunique()
+#     pairs=shared.groupby(['TF','RBP']).Accession.nunique().rename('shared_accessions').reset_index()
+#     pairs['tf_accessions']=pairs.TF.map(tfsize); pairs['rbp_accessions']=pairs.RBP.map(rbpsize)
+#     pairs['jaccard_similarity']=pairs.shared_accessions/(pairs.tf_accessions+pairs.rbp_accessions-pairs.shared_accessions)
+#     pairs.sort_values(['shared_accessions','jaccard_similarity'],ascending=False).to_csv(tables/'tf_rbp_shared_accession_statistics.csv',index=False)
+#     if not pairs.empty:
+#         top_tf=pairs.groupby('TF').shared_accessions.sum().nlargest(20).index
+#         top_rbp=pairs.groupby('RBP').shared_accessions.sum().nlargest(20).index
+#         matrix=pairs.pivot(index='TF',columns='RBP',values='shared_accessions').reindex(index=top_tf,columns=top_rbp).fillna(0)
+#         matrix.to_csv(tables/'top_tf_rbp_shared_accession_matrix.csv')
+#         f,ax=plt.subplots(figsize=(max(9,len(top_rbp)*.55),max(6,len(top_tf)*.4)))
+#         im=ax.imshow(matrix,aspect='auto',cmap='Blues'); ax.set_xticks(range(len(matrix.columns)),matrix.columns,rotation=60,ha='right'); ax.set_yticks(range(len(matrix.index)),matrix.index)
+#         ax.set_title('Mouse catalog: shared accession identifiers (top genes)'); ax.set_xlabel('RBP'); ax.set_ylabel('TF'); f.colorbar(im,ax=ax,label='Shared accessions'); f.tight_layout(); f.savefig(fig/'tf_rbp_shared_accession_heatmap.png',dpi=200,bbox_inches='tight'); plt.close(f)
+#     (base/'README.md').write_text('''# Mouse catalog analysis\n\nThe mouse inputs are catalogs of gene–dataset associations, not alternative-splicing event results. Therefore exact splicing-event overlap, age persistence, and sex-differential splicing cannot be computed from these files. Figures summarize catalog coverage and exact shared accession identifiers instead. A shared accession means the same identifier appears beside both genes; it does not establish a shared splicing event, direct regulation, or even that either gene was experimentally perturbed.\n\nAll technique sheets, including split and unclassified sheets, are included; summary/readme sheets are excluded. Catalog rows with missing gene or accession are excluded. The top-gene charts count distinct accession strings per gene; technique charts count association rows, not unique studies. Pair statistics deduplicate gene/accession pairs and use exact accession strings; different identifier types or aliases are not reconciled. Only nonzero pairs are in the statistics table; the heatmap shows up to 20 genes per class ranked by total pairwise overlap. Entries, gene associations, tissues and identifiers require source-level verification. Tables are in `tables/`.\n''')
+#     print(f'Mouse: {len(catalog["TF"]):,} TF rows, {len(catalog["RBP"]):,} RBP rows, {len(pairs):,} nonzero shared-accession pairs',flush=True)
 
 if __name__ == '__main__':
     niranjan()
-    mouse()
+    # mouse()
